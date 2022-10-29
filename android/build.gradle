@@ -1,0 +1,38 @@
+buildscript {
+    ext.kotlin_version = '1.6.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.3'
+        // START: FlutterFire Configuration
+        classpath 'com.google.gms:google-services:4.3.14'
+        // END: FlutterFire Configuration
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        // fix 504 issue of access https://google.bintray.com/exoplayer/com/google/android/gms/play-services-location/maven-metadata.xml
+//        maven {
+//            url 'https://google.bintray.com/exoplayer/'
+//        }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
